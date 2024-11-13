@@ -22,6 +22,9 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
     
     //count hour 
     private int dem = 0;
+    private int maxsoccer =dem;
+    
+    private boolean action = false;
     
     @Override // this is method paint geometry
     public void paintComponent(Graphics g){
@@ -39,11 +42,15 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
        
        g.setColor(Color.GREEN);
        g.setFont(new Font("Consolas" , Font.PLAIN ,30));
-       g.drawString(n1.score+"|"+n2.score, Consts.WIDTH / 2 -5, 25);
+       g.drawString("Điểm:"+dem/2+"", Consts.WIDTH / 2 -15, 25);
        
+       g.setColor(Color.GREEN);
+       g.setFont(new Font("Consolas" , Font.PLAIN ,30));
+       g.drawString("Điểm cao nhất:"+maxsoccer+"", 0, 25);
        
-       
-       
+       g.setColor(Color.GREEN);
+       g.setFont(new Font("Consolas" , Font.PLAIN ,30));
+       g.drawString("'space' to start", Consts.WIDTH-250, 25);
     }
     
     //set color is black.
@@ -56,8 +63,10 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
 
     @Override
     public void actionPerformed(ActionEvent e) {
+        if(action == true){
         ball.x += ball.speedX;
         ball.y += ball.speedY;
+        }
         ////
         // two object impact
         Rectangle rectball = new Rectangle(ball.x, ball.y, ball.Radius, ball.Radius);
@@ -67,7 +76,7 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
         if(rectball.intersects(rectn2)){// intersects(giao nhau)
             ball.speedX = -ball.speedX;
             dem++;
-            if(dem%10 == 0 && t != 5){
+            if(dem%10 == 0 && t != 0){
                 t -= 5;
                 time.setDelay(t); // Update timer delay
                 time.restart();// Restart timer with the new delay
@@ -76,7 +85,7 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
         if(rectball.intersects(rectn1)){
             ball.speedX = -ball.speedX;
             dem++;
-            if(dem%10 == 0 && t != 5){
+            if(dem%10 == 0 && t != 0){
                 t -= 5;
                 time.setDelay(t); // Update timer delay
                 time.restart();// Restart timer with the new delay
@@ -84,8 +93,11 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
         }
         
         n2.y= ball.y; 
-        n1.y= ball.y; 
-        if(ball.y >= Consts.HEIGHT - ball.Radius*2-10 || ball.y == 0){
+        if(dem/2 > maxsoccer){
+            maxsoccer = dem/2;
+        }
+        
+        if(ball.y >= Consts.HEIGHT - ball.Radius*2-10 || ball.y == 0  ){
             ball.speedY *= -1;
         }else if(ball.x >= Consts.WIDTH - ball.Radius ){
             n1.score++;
@@ -93,6 +105,7 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
             time.setDelay(t); // Update timer delay
             time.restart();// Restart timer with the new delay
             dem =0;
+            action = false;
             ball.x = Consts.WIDTH/2;
             ball.y = Consts.HEIGHT/2;
         }else if( ball.x == 0){
@@ -101,9 +114,11 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
             time.setDelay(t); // Update timer delay
             time.restart();// Restart timer with the new delay
             dem =0;
+            action = false;
             ball.x = Consts.WIDTH/2;
             ball.y = Consts.HEIGHT/2;
         }
+        
         
         repaint();//replace images
     }
@@ -121,15 +136,19 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
 
     @Override
     public void keyPressed(KeyEvent e) {//catch action press.It will run meantime.
-        if(e.getKeyCode() == KeyEvent.VK_W){
+        if(e.getKeyCode() == KeyEvent.VK_W &&n1.y >0 ){
             n1.y -= n1.speedY;
-        }else if(e.getKeyCode() == KeyEvent.VK_S){
+        }else if(e.getKeyCode() == KeyEvent.VK_S&& n1.y  <Consts.HEIGHT - ball.Radius*2-90){
             n1.y += n1.speedY;
         }
         if(e.getKeyCode() == KeyEvent.VK_UP){
             n2.y -= n2.speedY;
         }else if(e.getKeyCode() == KeyEvent.VK_DOWN){
             n2.y += n2.speedY;
+        }
+        
+        if(e.getKeyCode() == KeyEvent.VK_SPACE){
+            action = true;
         }
     }
 
