@@ -22,6 +22,7 @@ public class WindowPanel extends JPanel implements ActionListener,KeyListener {
     public static final int M_WIDTH = M_TILE*20;
     public static final int M_HEIGHT = M_TILE*20;
     
+    
     private int[] snakex,snakey;
     
     private int duoi =1;

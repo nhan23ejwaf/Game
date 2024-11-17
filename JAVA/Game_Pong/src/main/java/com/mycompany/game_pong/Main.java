@@ -13,7 +13,7 @@ public class Main extends JFrame {
     private ControlWindow ctr = new ControlWindow();
     public Main(){
         this.add(ctr);
-        this.pack();//help for JFrame and Jpanel(COntrolWindow) same size
+        //this.pack();//help for JFrame and Jpanel(COntrolWindow) same size
         this.setTitle("Pong Pong");
         this.setSize(Consts.WIDTH,Consts.HEIGHT);
         this.setLocationRelativeTo(null);

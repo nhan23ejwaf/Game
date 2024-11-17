@@ -92,6 +92,8 @@ public class ControlWindow extends JPanel implements ActionListener ,KeyListener
             }
         }
         
+        
+        n1.y = ball.y;
         n2.y= ball.y; 
         if(dem/2 > maxsoccer){
             maxsoccer = dem/2;
